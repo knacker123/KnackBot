@@ -17,7 +17,7 @@ public class KnackOnOne extends AdvancedRobot {
 	Strategy strategy;
 	
 	public void run() {
-		// Initialization of the robot should be put here
+		// Initialization of the robot should be put here test
 		setBodyColor(Color.pink);
 		setGunColor(Color.black);
 		setRadarColor(Color.pink);

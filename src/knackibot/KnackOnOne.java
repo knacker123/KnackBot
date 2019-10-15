@@ -1,6 +1,8 @@
 package knackibot;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 
 import robocode.*;
 import robocode.util.Utils;
@@ -14,7 +16,8 @@ public class KnackOnOne extends AdvancedRobot {
 	 */
 	
 	Enemy enemy;
-	Strategy strategy;
+	NaiveStrategy strategy;
+	Point2D.Double ownPos;
 	
 	public void run() {
 		// Initialization of the robot should be put here test
@@ -44,10 +47,12 @@ public class KnackOnOne extends AdvancedRobot {
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		ownPos = new Point2D.Double(getX(), getY());
+		
 		enemy.processOnScannedRobot(e);
-
-		System.out.println("Event: bearing=" +  e.getBearingRadians());
-	    // Absolute angle towards target
+		enemy.addPosLog(this);
+		
+		// Absolute angle towards target
 	    double angleToEnemy = getHeadingRadians() + e.getBearingRadians();
 	 
 	    // Subtract current radar heading to get the turn required to face the enemy, be sure it is normalized
@@ -73,14 +78,16 @@ public class KnackOnOne extends AdvancedRobot {
 	    
 	    // GUN
 	    strategy.shoot(enemy, this);
+	    
+	    //Debug
+	    System.out.println("Time:" + getTime());
 	}
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		// Replace the next line with any behavior you would like
-		//back(20);
+		enemy.addShotHitMe();
 	}
 	
 	/**
@@ -91,4 +98,36 @@ public class KnackOnOne extends AdvancedRobot {
 		//back(20);
 	}	
 	
+	// One of my bullets has hit an enemy
+	public void onBulletHit(BulletHitEvent event)
+	{
+		// TODO impl
+	}
+	
+	// One of my bullets hit another bullet
+	public void onBulletHitBullet(BulletHitBulletEvent event)
+	{
+		// TODO impl
+	}
+	
+	public void onRoundEnded(RoundEndedEvent event)
+	{
+		// TODO: possibility to save statistics over several rounds
+	}
+
+	
+	//Debugging -----------------------------------
+	public void onPaint(Graphics2D g){
+		g.setColor(java.awt.Color.GREEN);
+		//drawing the predicted way for the enemyBot
+		try{
+			for(int i=0; i<strategy.getPosPrediction().size()-1; i++){
+			g.drawLine((int)strategy.getPosPrediction().get(i).getX(),(int)strategy.getPosPrediction().get(i).getY(),(int)strategy.getPosPrediction().get(i+1).getX(),(int)strategy.getPosPrediction().get(i+1).getY());
+			}
+		}	
+		catch(Exception e){
+		}
+		
+		g.drawRect((int)getX(), (int)getY(), 5, 5);
+	}
 }

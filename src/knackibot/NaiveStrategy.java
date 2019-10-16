@@ -24,7 +24,6 @@ public class NaiveStrategy implements Strategy{
 			//follow enemy
 		    me.setTurnRightRadians(Utils.normalRelativeAngle(enemy.getBearingRadians()));
 		    me.setAhead(10);
-		    System.out.println("follow");
 		}
 		else {
 			//simple random movement
@@ -81,16 +80,8 @@ public class NaiveStrategy implements Strategy{
 					for(int j=0; j<6; j++){
 						diffDistance += ( enemy.getPosLogAt(i+j+1).distance(enemy.getPosLogAt(i+j))) - 
 										(  enemy.getPosLogAt(enemy.getPosLogSize()-7+j).distance(enemy.getPosLogAt(enemy.getPosLogSize()-8+j)) ) ;
-						System.out.println("X1: " + enemy.getPosLogAt(i+j+1).x + " Y1: " + enemy.getPosLogAt(i+j+1).y + "X2: " + enemy.getPosLogAt(i+j).x + " Y2: " + enemy.getPosLogAt(i+j).y );
-						System.out.println("DistanceHistory: " + enemy.getPosLogAt(i+j+1).distance(enemy.getPosLogAt(i+j)));
-						System.out.println("DistanceCurrent: "+ enemy.getPosLogAt(enemy.getPosLogSize()-7+j).distance(enemy.getPosLogAt(enemy.getPosLogSize()-8+j)));
-						
 						diffTurnRate += ( Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) ) - 
 										( Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j))) ;
-					
-						System.out.println("TurnRateHistory: " + (Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1))));
-						System.out.println("TurnRateCurrent: "+ ( Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j))));
-						
 					}
 					if(diffDistance+diffTurnRate < minDiff){
 						minDiff = diffDistance+diffTurnRate;
@@ -131,7 +122,6 @@ public class NaiveStrategy implements Strategy{
 				
 				//Fireing
 				fireAt(me, firepower, targetPos);
-				System.out.println("fireAt: " + targetPos);
 			}
 		}
 	}

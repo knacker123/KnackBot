@@ -18,9 +18,6 @@ public class Enemy{
 	
 	private int tick;
 	
-	private double historyHeadingChange[];
-	private double historyVelocity[];
-	
 	private List<Point2D.Double> posLog;
 	
 	public Enemy()
@@ -42,7 +39,6 @@ public class Enemy{
 	public void processOnScannedRobot(ScannedRobotEvent e) {
 		//cache information from last turn
 		double energyLastTurn = this.energy;
-		double headingLastTurn = this.heading;
 		
 		//update
 		this.energy = e.getEnergy();
@@ -93,6 +89,7 @@ public class Enemy{
 	public void addPosLog(KnackOnOne me)
 	{
 		this.posLog.add(MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian));
+		System.out.println("Enemy.LogPos.size() = " + posLog.size());
 	}
 	
 	public int getPosLogSize()

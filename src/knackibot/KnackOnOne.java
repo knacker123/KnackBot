@@ -77,10 +77,7 @@ public class KnackOnOne extends AdvancedRobot {
 	    strategy.move(enemy, this);
 	    
 	    // GUN
-	    strategy.shoot(enemy, this);
-	    
-	    //Debug
-	    System.out.println("Time:" + getTime());
+	    strategy.shoot(enemy, this);    
 	}
 
 	/**

@@ -10,6 +10,10 @@ import java.util.List;
 
 import knackibot.Enemy;
 
+
+/**
+ * @author Robert Guder
+ */
 public class NaiveStrategy implements Strategy{
 
 	public NaiveStrategy() {
@@ -40,14 +44,13 @@ public class NaiveStrategy implements Strategy{
 		return posPrediction;
 	}
 	
-	// Typical Head-On Targeting
 	@Override
 	public void shoot(Enemy enemy, KnackOnOne me) {
 		int strategy = 2;
 		
 		switch(strategy)
 		{
-		// naive strategy: fire with high power if close to robot
+		// naive strategy: fire with high power if close to robot - targeting on last known position of EnemyBot
 		case 1:
 			  // Absolute angle towards target
 		    double angleToEnemy = me.getHeadingRadians() + enemy.getBearingRadians();
@@ -64,6 +67,9 @@ public class NaiveStrategy implements Strategy{
 		    	me.fire(1);
 		case 2:
 		default:
+			/*****************************************************************
+			 * Implementation of Pattern Matching 
+			 *****************************************************************/
 			posPrediction.clear();
 			double diffDistance;
 			double diffTurnRate;
@@ -120,7 +126,7 @@ public class NaiveStrategy implements Strategy{
 						//fire = false;
 				}
 				
-				//Fireing
+				//Firing
 				fireAt(me, firepower, targetPos);
 			}
 		}

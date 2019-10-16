@@ -8,23 +8,22 @@ import robocode.*;
 import robocode.util.Utils;
 import knackibot.Enemy;
 
-
+/**
+ * @author Robert Guder
+ */
 public class KnackOnOne extends AdvancedRobot {
-
-	/**
-	 * run: Test's default behavior
-	 */
 	
 	Enemy enemy;
 	NaiveStrategy strategy;
 	Point2D.Double ownPos;
 	
 	public void run() {
-		// Initialization of the robot should be put here test
+		// Set design of the Robot
 		setBodyColor(Color.pink);
 		setGunColor(Color.black);
 		setRadarColor(Color.pink);
 
+		// Initialize
 		enemy = new Enemy();
 		strategy = new NaiveStrategy();
 		
@@ -33,8 +32,9 @@ public class KnackOnOne extends AdvancedRobot {
 		
 	    turnRadarRight(Double.POSITIVE_INFINITY);	
 	    
-		// Robot main loop
 		while(true) {
+			// Width Lock part I - acc. to http://robowiki.net/wiki/One_on_One_Radar
+			// Turn the radar if we have no more turn, starts it if it stops and at the start of round
 			if( getRadarTurnRemainingRadians() == 0)
 			{
 	            setTurnRadarRightRadians( Double.POSITIVE_INFINITY );
@@ -52,26 +52,8 @@ public class KnackOnOne extends AdvancedRobot {
 		enemy.processOnScannedRobot(e);
 		enemy.addPosLog(this);
 		
-		// Absolute angle towards target
-	    double angleToEnemy = getHeadingRadians() + e.getBearingRadians();
-	 
-	    // Subtract current radar heading to get the turn required to face the enemy, be sure it is normalized
-	    double radarTurn = Utils.normalRelativeAngle( angleToEnemy - getRadarHeadingRadians() );	    
-	    // Distance we want to scan from middle of enemy to either side
-	    // The 36.0 is how many units from the center of the enemy robot it scans.
-	    double extraTurn = Math.min( Math.atan( 36.0 / e.getDistance() ), Rules.RADAR_TURN_RATE_RADIANS );
-	 
-	    // Adjust the radar turn so it goes that much further in the direction it is going to turn
-	    // Basically if we were going to turn it left, turn it even more left, if right, turn more right.
-	    // This allows us to overshoot our enemy so that we get a good sweep that will not slip.
-	    if (radarTurn < 0)
-	        radarTurn -= extraTurn;
-	    else
-	        radarTurn += extraTurn;
-	 
 	    //Turn the radar
-	    setTurnRadarRightRadians(radarTurn);
-		
+	    setTurnRadarRightRadians(applyWidthLock(e));
 	    
 	    // Movement
 	    strategy.move(enemy, this);
@@ -112,6 +94,33 @@ public class KnackOnOne extends AdvancedRobot {
 		// TODO: possibility to save statistics over several rounds
 	}
 
+	/*
+	 * Width lock implementation acc. to http://robowiki.net/wiki/One_on_One_Radar
+	 * 
+	 * @return: angle -> how far should the radar be turned in order to achieve optimal lock
+	 */
+	private double applyWidthLock(ScannedRobotEvent e)
+	{
+		// Absolute angle towards target
+	    double angleToEnemy = getHeadingRadians() + e.getBearingRadians();
+	 
+	    // Subtract current radar heading to get the turn required to face the enemy, be sure it is normalized
+	    double radarTurn = Utils.normalRelativeAngle( angleToEnemy - getRadarHeadingRadians() );	    
+	    // Distance we want to scan from middle of enemy to either side
+	    // The 36.0 is how many units from the center of the enemy robot it scans.
+	    double extraTurn = Math.min( Math.atan( 36.0 / e.getDistance() ), Rules.RADAR_TURN_RATE_RADIANS );
+	 
+	    // Adjust the radar turn so it goes that much further in the direction it is going to turn
+	    // Basically if we were going to turn it left, turn it even more left, if right, turn more right.
+	    // This allows us to overshoot our enemy so that we get a good sweep that will not slip.
+	    if (radarTurn < 0)
+	        radarTurn -= extraTurn;
+	    else
+	        radarTurn += extraTurn;
+	    
+	    return radarTurn;
+	}
+	
 	
 	//Debugging -----------------------------------
 	public void onPaint(Graphics2D g){

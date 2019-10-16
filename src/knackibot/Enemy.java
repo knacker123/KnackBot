@@ -5,6 +5,10 @@ import java.awt.geom.Point2D;
 
 import robocode.*;
 
+
+/**
+ * @author Robert Guder
+ */
 public class Enemy{
 
 	private double energy;
@@ -15,8 +19,6 @@ public class Enemy{
 	
 	private int nrBulletsHitMeThisRound;
 	private int nrBulletsFiredThisRound;
-	
-	private int tick;
 	
 	private List<Point2D.Double> posLog;
 	
@@ -40,7 +42,7 @@ public class Enemy{
 		//cache information from last turn
 		double energyLastTurn = this.energy;
 		
-		//update
+		//update EnemyBot
 		this.energy = e.getEnergy();
 		this.velocity = e.getVelocity();
 		this.bearingRadian = e.getBearingRadians();
@@ -86,17 +88,30 @@ public class Enemy{
 	/*************************************************
 	 * Position Logging
 	 *************************************************/
+	
+	/*
+	 * PosLog is the logging all of positions the EnemyBot.
+	 * This function adds the current enemys' position to Enemy.posLog. 
+	 */
 	public void addPosLog(KnackOnOne me)
 	{
 		this.posLog.add(MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian));
 		System.out.println("Enemy.LogPos.size() = " + posLog.size());
 	}
 	
+	/*
+	 * PosLog is the logging all of positions the EnemyBot.
+	 * This function returns the size of Enemy.posLog. 
+	 */
 	public int getPosLogSize()
 	{
 		return this.posLog.size();
 	}
 	
+	/*
+	 * PosLog is the logging all of positions the EnemyBot.
+	 * This function returns position in Enemy.posLog on given index
+	 */
 	public Point2D.Double getPosLogAt(int i)
 	{
 		if(this.posLog.size()>i)

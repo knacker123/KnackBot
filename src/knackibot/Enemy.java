@@ -5,7 +5,6 @@ import java.awt.geom.Point2D;
 
 import robocode.*;
 
-
 /**
  * @author Robert Guder
  */
@@ -20,7 +19,7 @@ public class Enemy{
 	private int nrBulletsHitMeThisRound;
 	private int nrBulletsFiredThisRound;
 	
-	private List<Point2D.Double> posLog;
+	static private List<Point2D.Double> posLog = new ArrayList<Point2D.Double>();
 	
 	public Enemy()
 	{
@@ -34,7 +33,7 @@ public class Enemy{
 		this.nrBulletsHitMeThisRound = 0;
 		
 
-		posLog = new ArrayList<Point2D.Double>();
+		//posLog = new ArrayList<Point2D.Double>();
 		
 	}
 	
@@ -95,8 +94,7 @@ public class Enemy{
 	 */
 	public void addPosLog(KnackOnOne me)
 	{
-		this.posLog.add(MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian));
-		System.out.println("Enemy.LogPos.size() = " + posLog.size());
+		Enemy.posLog.add(MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian));
 	}
 	
 	/*
@@ -105,7 +103,7 @@ public class Enemy{
 	 */
 	public int getPosLogSize()
 	{
-		return this.posLog.size();
+		return Enemy.posLog.size();
 	}
 	
 	/*
@@ -114,14 +112,30 @@ public class Enemy{
 	 */
 	public Point2D.Double getPosLogAt(int i)
 	{
-		if(this.posLog.size()>i)
+		if(Enemy.posLog.size()>i)
 		{
-			return this.posLog.get(i);
+			return Enemy.posLog.get(i);
 		}
 		else {
 			throw new IndexOutOfBoundsException("Index " + i + " is out of bounds!");
 		}
 		
+	}
+	
+	/*
+	 * PosLog is the logging all of positions the EnemyBot.
+	 * In case posLog exceeds maxSize, the first n elements are removed.
+	 */
+	public void cleanupMemorySizePosLog(int maxSize)
+	{
+		int curPosLogSize = Enemy.posLog.size();
+		if(curPosLogSize > maxSize)
+		{
+			for(int i = 0; i < (curPosLogSize - maxSize); i++)
+			{
+				Enemy.posLog.remove(0);
+			}
+		}
 	}
 	
 }

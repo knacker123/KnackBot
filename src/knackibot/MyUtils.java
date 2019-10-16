@@ -20,6 +20,7 @@ public class MyUtils
 		double angle = (Math.atan2(next.getX() - center.getX(),next.getY() - center.getY())-
 	                        Math.atan2(previous.getX() - center.getX(),previous.getY() - center.getY()));
 		
+		//TODO: check if the following line is correct...
 		if(angle<0){
 			angle+= 2*Math.PI;
 		}

@@ -58,7 +58,6 @@ public class NaiveStrategy implements Strategy{
 		    // Subtract current radar heading to get the turn required to face the enemy, be sure it is normalized
 		    double gunTurn = Utils.normalRelativeAngle(angleToEnemy - me.getGunHeadingRadians() );
 		 
-		    System.out.println("fire executed");
 		    me.setTurnGunRightRadians(gunTurn);
 		    // near distance much firepower
 		    if(enemy.getDistance() < 150)
@@ -73,7 +72,7 @@ public class NaiveStrategy implements Strategy{
 			posPrediction.clear();
 			double diffDistance;
 			double diffTurnRate;
-			double minDiff = Double.POSITIVE_INFINITY;
+			double sumHeuristicMin = Double.POSITIVE_INFINITY;
 
 			int ptMinDiffStart = 0; //index of the start of the Pattern which is connected with minDIff
 			int ptMinDiffEnd = 7;
@@ -84,20 +83,28 @@ public class NaiveStrategy implements Strategy{
 					diffDistance = 0;
 					diffTurnRate = 0;
 					for(int j=0; j<6; j++){
-						diffDistance += ( enemy.getPosLogAt(i+j+1).distance(enemy.getPosLogAt(i+j))) - 
-										(  enemy.getPosLogAt(enemy.getPosLogSize()-7+j).distance(enemy.getPosLogAt(enemy.getPosLogSize()-8+j)) ) ;
-						diffTurnRate += ( Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) ) - 
-										( Math.PI - MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j))) ;
+						diffDistance += Math.abs( 
+										( enemy.getPosLogAt(i+j+1).distance(enemy.getPosLogAt(i+j))) - 
+										( enemy.getPosLogAt(enemy.getPosLogSize()-7+j).distance(enemy.getPosLogAt(enemy.getPosLogSize()-8+j)) )
+										) ;
+						
+						diffTurnRate += Math.abs( 
+										/*Math.PI -*/ MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) - 
+										( /*Math.PI -*/ MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)))
+										) ;
+					
+						System.out.println("diffDis: " + diffDistance + " diffTurnRate: " + diffTurnRate);
+						System.out.println("TurnRate a: " + MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) );
+						System.out.println("TurnRate b: " + MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)));
 					}
-					if(diffDistance+diffTurnRate < minDiff){
-						minDiff = diffDistance+diffTurnRate;
+					if(diffDistance+diffTurnRate < sumHeuristicMin){
+						sumHeuristicMin = diffDistance+diffTurnRate;
 						ptMinDiffStart = i;
 						ptMinDiffEnd = i+6;
-						System.out.println("DiffHeuristik: " + minDiff);
 					}
 				}
-				
-				double firepower = calcFirepower(enemy);
+				System.out.println("Heuristik: " + sumHeuristicMin);
+				double firepower = calcFirepower(enemy, sumHeuristicMin);
 				int i=1;
 				//boolean fire = true;
 				Point2D.Double targetPos = enemy.getPosLogAt(enemy.getPosLogSize()-1); 
@@ -108,9 +115,9 @@ public class NaiveStrategy implements Strategy{
 				//enemyBot.posLog.get(ptMinDiffStart+6+i)
 				try{
 				while(me.ownPos.distance(targetPos) >(20-3*firepower)*i){
-					System.out.println("own: " + me.toString() + "   enemy: " + targetPos.toString() + "    distance: " + me.ownPos.distance(targetPos));
-					System.out.println(enemy.getPosLogAt(enemy.getPosLogSize()-1));
-					System.out.println(i);
+//					System.out.println("own: " + me.toString() + "   enemy: " + targetPos.toString() + "    distance: " + me.ownPos.distance(targetPos));
+//					System.out.println(enemy.getPosLogAt(enemy.getPosLogSize()-1));
+//					System.out.println(i);
 					targetPosHelp = targetPos;
 					targetPos = calcTargetPositionWithPatternMatching(me, targetPosHelp,	targetPosPrev, 	
 											enemy.getPosLogAt(ptMinDiffEnd-2+i),enemy.getPosLogAt(ptMinDiffEnd-1+i), enemy.getPosLogAt(ptMinDiffEnd+i));
@@ -122,6 +129,7 @@ public class NaiveStrategy implements Strategy{
 					i++;
 				}
 				}catch(Exception e){
+					// TODO: this out of bound sometimes occurs --> fix
 						System.out.println("Index out of bound during patternMatching, targetPosition prediction");
 						//fire = false;
 				}
@@ -132,7 +140,7 @@ public class NaiveStrategy implements Strategy{
 		}
 	}
 	
-	private double calcFirepower(Enemy enemy){
+	private double calcFirepower(Enemy enemy, double heuristic){
 		double firepower;
 		if(enemy.getEnergy() < 16.0){
 				if(enemy.getEnergy()<4.0){
@@ -143,7 +151,23 @@ public class NaiveStrategy implements Strategy{
 				}
 			}
 			else{
-				firepower = 3;
+				// TODO: improve algorithm to adapt firepower
+				if(heuristic < 10) {
+					firepower = 3;
+				}
+				else {
+					if(enemy.getDistance() < 200)
+					{
+						firepower = 3;
+					}
+					else if(enemy.getDistance() < 500)
+					{
+						firepower = 2;
+					}
+					else {
+						firepower = 0.5;
+					}
+				}
 			}
 		return firepower;
 	}

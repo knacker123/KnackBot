@@ -92,6 +92,9 @@ public class KnackOnOne extends AdvancedRobot {
 	public void onRoundEnded(RoundEndedEvent event)
 	{
 		// TODO: possibility to save statistics over several rounds
+		
+		// don't let Enemy.posLog exceed 1000 logs
+		enemy.cleanupMemorySizePosLog(1000);
 	}
 
 	/*

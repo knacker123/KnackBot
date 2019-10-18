@@ -124,7 +124,6 @@ public class KnackOnOne extends AdvancedRobot {
 	    return radarTurn;
 	}
 	
-	
 	//Debugging -----------------------------------
 	public void onPaint(Graphics2D g){
 		g.setColor(java.awt.Color.GREEN);

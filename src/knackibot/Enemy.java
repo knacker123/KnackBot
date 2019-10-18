@@ -2,6 +2,8 @@ package knackibot;
 
 import java.util.*;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import robocode.*;
 
@@ -83,7 +85,6 @@ public class Enemy{
 		return this.distance;
 	}
 	
-	
 	/*************************************************
 	 * Position Logging
 	 *************************************************/
@@ -94,7 +95,11 @@ public class Enemy{
 	 */
 	public void addPosLog(KnackOnOne me)
 	{
-		Enemy.posLog.add(MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian));
+		Point2D.Double p = MyUtils.calcPoint(me.ownPos, this.distance, me.getHeadingRadians() + this.bearingRadian);
+		// round to 3 after decimals
+		p.x = MyUtils.roundDouble(p.x, 3);
+		p.y = MyUtils.roundDouble(p.y, 3);
+		Enemy.posLog.add(p);
 	}
 	
 	/*

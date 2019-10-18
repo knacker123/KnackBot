@@ -1,6 +1,8 @@
 package knackibot;
 
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author Robert Guder
@@ -48,5 +50,16 @@ public class MyUtils
 	 */
 	public static double calcAngle(Point2D.Double p2,Point2D.Double p1){
 		return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+	}
+	
+	/*
+	 * This function rounds value to #places after decimal values
+	 */
+	public static double roundDouble(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+	 
+	    BigDecimal bd = new BigDecimal(Double.toString(value));
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 }

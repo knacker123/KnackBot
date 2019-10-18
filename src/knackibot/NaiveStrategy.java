@@ -5,6 +5,8 @@ import robocode.util.Utils;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class NaiveStrategy implements Strategy{
 	{
 		return posPrediction;
 	}
+
 	
 	@Override
 	public void shoot(Enemy enemy, KnackOnOne me) {
@@ -93,9 +96,11 @@ public class NaiveStrategy implements Strategy{
 										( /*Math.PI -*/ MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)))
 										) ;
 					
-						System.out.println("diffDis: " + diffDistance + " diffTurnRate: " + diffTurnRate);
-						System.out.println("TurnRate a: " + MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) );
-						System.out.println("TurnRate b: " + MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)));
+				//		System.out.println("x-1: " + enemy.getPosLogAt(i+j-1).getX() + "x: " + enemy.getPosLogAt(i+j).getX() + "x+1: " + enemy.getPosLogAt(i+j-1).getX() + "y-1: " + enemy.getPosLogAt(i+j-1).getY() + "y: " + enemy.getPosLogAt(i+j).getY() + "y+1: " + enemy.getPosLogAt(i+j-1).getY());
+				//		System.out.println("x-1: " + enemy.getPosLogAt(enemy.getPosLogSize()-9+j).getX() + "x: " + enemy.getPosLogAt(enemy.getPosLogSize()-8+j).getX() + "x+1: " + enemy.getPosLogAt(enemy.getPosLogSize()-7+j).getX() + "y-1: " + enemy.getPosLogAt(enemy.getPosLogSize()-9+j).getY() + "y: " + enemy.getPosLogAt(enemy.getPosLogSize()-8+j).getY() + "y+1: " + enemy.getPosLogAt(enemy.getPosLogSize()-7+j).getY());
+				//		System.out.println("diffDis: " + diffDistance + " diffTurnRate: " + diffTurnRate);
+				//		System.out.println("TurnRate a: " + MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) );
+				//		System.out.println("TurnRate b: " + MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)));
 					}
 					if(diffDistance+diffTurnRate < sumHeuristicMin){
 						sumHeuristicMin = diffDistance+diffTurnRate;
@@ -152,15 +157,15 @@ public class NaiveStrategy implements Strategy{
 			}
 			else{
 				// TODO: improve algorithm to adapt firepower
-				if(heuristic < 10) {
+				if(heuristic < 0.1) {
 					firepower = 3;
 				}
 				else {
-					if(enemy.getDistance() < 200)
+					if(enemy.getDistance() < 100)
 					{
 						firepower = 3;
 					}
-					else if(enemy.getDistance() < 500)
+					else if(enemy.getDistance() < 400)
 					{
 						firepower = 2;
 					}

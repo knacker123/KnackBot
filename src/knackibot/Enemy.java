@@ -85,6 +85,10 @@ public class Enemy{
 		return this.distance;
 	}
 	
+	public int getNrBulletsFiredThisRound()
+	{
+		return this.nrBulletsFiredThisRound;
+	}
 	/*************************************************
 	 * Position Logging
 	 *************************************************/

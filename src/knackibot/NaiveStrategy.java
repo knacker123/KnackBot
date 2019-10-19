@@ -18,24 +18,35 @@ import knackibot.Enemy;
  */
 public class NaiveStrategy implements Strategy{
 
+	private Point2D.Double movingPoint;
+
 	public NaiveStrategy() {
-		// TODO Auto-generated constructor stub
+		//TODO change initial moving point, because if bearing is small, I am kanonenfutter
+		Point2D.Double movingPoint = new Point2D.Double(200,200);
+
 	}
 	
 	@Override
 	public void move(Enemy enemy, KnackOnOne me) {
-		// TODO Auto-generated method stub
-		if(enemy.getDistance() > 120)
+		int movingStrategy = 2;
+		switch(movingStrategy) {
+		case 1:
 		{
-			//follow enemy
-		    me.setTurnRightRadians(Utils.normalRelativeAngle(enemy.getBearingRadians()));
-		    me.setAhead(10);
+			if(enemy.getDistance() > 120)
+			{
+				//follow enemy
+			    me.setTurnRightRadians(Utils.normalRelativeAngle(enemy.getBearingRadians()));
+			    me.setAhead(10);
+			}
 		}
-		else {
-			//simple random movement
-		//	setTurnRightRadians(Utils.getRandom().nextDouble()*30);
-		//	setAhead(Utils.getRandom().nextDouble()*20);
-		//	System.out.println("random");
+		//Stop and Go Strategy
+		case 2:
+		default:
+		{
+			boolean move = enemy.getNrBulletsFiredThisRound() % 2 == 0;
+			this.movingPoint = calcMovingPoint(me, enemy.getBearingRadians(), this.movingPoint, enemy.getPosLogAt(enemy.getPosLogSize()-1));
+			simpleStopAndGo(me, move, this.movingPoint);		
+		}
 		}
 	}
 
@@ -157,8 +168,12 @@ public class NaiveStrategy implements Strategy{
 			}
 			else{
 				// TODO: improve algorithm to adapt firepower
-				if(heuristic < 0.1) {
+				if(heuristic < 0.01) {
 					firepower = 3;
+				}
+				else if(heuristic < 0.1)
+				{
+					firepower = 1.5;
 				}
 				else {
 					if(enemy.getDistance() < 100)
@@ -167,10 +182,10 @@ public class NaiveStrategy implements Strategy{
 					}
 					else if(enemy.getDistance() < 400)
 					{
-						firepower = 2;
+						firepower = 0.2;
 					}
 					else {
-						firepower = 0.5;
+						firepower = 0.0;
 					}
 				}
 			}
@@ -202,5 +217,43 @@ public class NaiveStrategy implements Strategy{
 	private void fireAt(KnackOnOne me, double firepower, Point2D.Double p){
 		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAngle(p, me.ownPos) - me.getGunHeadingRadians()));
 		me.setFire(firepower);
+	}
+	
+	private Point2D.Double calcMovingPoint(KnackOnOne me, double bearing, Point2D.Double lastMovingPoint, Point2D.Double enemyPos){
+		//angle to enemy is to direct, so change direction
+		if(Math.abs(bearing)<Math.PI/6 || Math.abs(bearing)<5*Math.PI/6){
+			Point2D.Double result = MyUtils.calcPoint(me.ownPos, Math.random()*300, Math.PI+bearing);
+			if(result.x<0){
+				result.setLocation(100, result.y);
+			}
+			if(result.y<0){
+				result.setLocation(result.x, 100);
+			}
+			if(result.x>me.getBattleFieldWidth()){
+				result.setLocation(me.getBattleFieldWidth()-100, result.y);
+			}
+			if(result.y>me.getBattleFieldHeight()){
+				result.setLocation(result.x, me.getBattleFieldHeight() - 100);
+			}
+			return result;
+		}
+		else{
+			//dont change moving point
+			return lastMovingPoint;
+		}
+	}
+	
+	private void simpleStopAndGo(KnackOnOne me, boolean move, Point2D.Double movingPoint){
+		if(move){
+			moveToPoint(me, movingPoint);
+		}
+		else{
+			me.setStop();
+		}
+	}
+		
+	private void moveToPoint(KnackOnOne me, Point2D.Double p){
+		me.setTurnRightRadians(Utils.normalRelativeAngle(me.getHeadingRadians() -  MyUtils.calcAngle(me.ownPos, p)));
+		me.setAhead(me.ownPos.distance(p));
 	}
 }

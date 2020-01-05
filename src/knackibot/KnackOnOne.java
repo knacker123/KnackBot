@@ -16,6 +16,8 @@ public class KnackOnOne extends AdvancedRobot {
 	Enemy enemy;
 	NaiveStrategy strategy;
 	Point2D.Double ownPos;
+	int bulletsFired = 0;
+	int nrOfBulletsHitEnemy = 0;
 	
 	public void run() {
 		// Set design of the Robot
@@ -62,6 +64,10 @@ public class KnackOnOne extends AdvancedRobot {
 	    strategy.shoot(enemy, this);    
 	}
 
+	public void onBulletMissed(BulletMissedEvent e)
+	{
+		this.bulletsFired++;
+	}
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
 	 */
@@ -80,19 +86,31 @@ public class KnackOnOne extends AdvancedRobot {
 	// One of my bullets has hit an enemy
 	public void onBulletHit(BulletHitEvent event)
 	{
-		// TODO impl
+		this.nrOfBulletsHitEnemy++;
+		this.bulletsFired++;
 	}
 	
+	public void addFire()
+	{
+		//this.bulletsFired++;
+	}
 	// One of my bullets hit another bullet
 	public void onBulletHitBullet(BulletHitBulletEvent event)
 	{
-		// TODO impl
+		this.bulletsFired++;
 	}
 	
+	//possibility to safe statistics at the end of a round
 	public void onRoundEnded(RoundEndedEvent event)
 	{
-		// TODO: possibility to save statistics over several rounds
+		System.out.println("#### Statisctics fot this round #####");
+		System.out.println("Accuracy: " + (double)this.nrOfBulletsHitEnemy/(double)this.bulletsFired);
+		System.out.println("Number of Bullets fired: " + this.bulletsFired);
+		System.out.println("Number of Bullets hit Enemy: " + this.nrOfBulletsHitEnemy);
+		System.out.println("######################################");
 		
+		this.nrOfBulletsHitEnemy = 0;
+		this.bulletsFired = 0;
 		// don't let Enemy.posLog exceed 1000 logs
 		enemy.cleanupMemorySizePosLog(1000);
 	}
@@ -136,6 +154,13 @@ public class KnackOnOne extends AdvancedRobot {
 		catch(Exception e){
 		}
 		
+		//draw position of KnackBot
+		g.setColor(java.awt.Color.BLACK);
 		g.drawRect((int)getX(), (int)getY(), 5, 5);
+		
+		//drawPosition of Enemy
+		g.setColor(java.awt.Color.BLUE);
+		g.drawRect((int)enemy.getPosLogAt(enemy.getPosLogSize()-1).x, (int)enemy.getPosLogAt(enemy.getPosLogSize()-1).y, 5, 5);  
+		
 	}
 }

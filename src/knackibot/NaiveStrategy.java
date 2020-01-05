@@ -22,7 +22,7 @@ public class NaiveStrategy implements Strategy{
 
 	public NaiveStrategy() {
 		//TODO change initial moving point, because if bearing is small, I am kanonenfutter
-		Point2D.Double movingPoint = new Point2D.Double(200,200);
+		this.movingPoint = new Point2D.Double(200,200);
 
 	}
 	
@@ -75,9 +75,13 @@ public class NaiveStrategy implements Strategy{
 		    me.setTurnGunRightRadians(gunTurn);
 		    // near distance much firepower
 		    if(enemy.getDistance() < 150)
+		    {
 		    	me.fire(Rules.MAX_BULLET_POWER);
+		    }
 		    else if(enemy.getDistance() < 400)
+		    {
 		    	me.fire(1);
+		    }
 		case 2:
 		default:
 			/*****************************************************************
@@ -92,19 +96,22 @@ public class NaiveStrategy implements Strategy{
 			int ptMinDiffEnd = 7;
 			
 			//only execute if log > 8 because else, there would be no data to compare
-			if(enemy.getPosLogSize() > 8){
-				for(int i=1; i<enemy.getPosLogSize()-8; i++){
+			if(enemy.getPosLogSize() > 8)
+			{
+				for(int i=1; i<enemy.getPosLogSize()-8; i++)
+				{
 					diffDistance = 0;
 					diffTurnRate = 0;
-					for(int j=0; j<6; j++){
+					for(int j=0; j<6; j++)
+					{
 						diffDistance += Math.abs( 
 										( enemy.getPosLogAt(i+j+1).distance(enemy.getPosLogAt(i+j))) - 
 										( enemy.getPosLogAt(enemy.getPosLogSize()-7+j).distance(enemy.getPosLogAt(enemy.getPosLogSize()-8+j)) )
 										) ;
 						
 						diffTurnRate += Math.abs( 
-										/*Math.PI -*/ MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) - 
-										( /*Math.PI -*/ MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)))
+										MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) - 
+										( MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)))
 										) ;
 					
 				//		System.out.println("x-1: " + enemy.getPosLogAt(i+j-1).getX() + "x: " + enemy.getPosLogAt(i+j).getX() + "x+1: " + enemy.getPosLogAt(i+j-1).getX() + "y-1: " + enemy.getPosLogAt(i+j-1).getY() + "y: " + enemy.getPosLogAt(i+j).getY() + "y+1: " + enemy.getPosLogAt(i+j-1).getY());
@@ -113,7 +120,8 @@ public class NaiveStrategy implements Strategy{
 				//		System.out.println("TurnRate a: " + MyUtils.angleBetween(enemy.getPosLogAt(i+j), enemy.getPosLogAt(i+j+1), enemy.getPosLogAt(i+j-1)) );
 				//		System.out.println("TurnRate b: " + MyUtils.angleBetween(enemy.getPosLogAt(enemy.getPosLogSize()-8+j), enemy.getPosLogAt(enemy.getPosLogSize()-7+j), enemy.getPosLogAt(enemy.getPosLogSize()-9+j)));
 					}
-					if(diffDistance+diffTurnRate < sumHeuristicMin){
+					if(diffDistance+diffTurnRate < sumHeuristicMin)
+					{
 						sumHeuristicMin = diffDistance+diffTurnRate;
 						ptMinDiffStart = i;
 						ptMinDiffEnd = i+6;
@@ -130,7 +138,8 @@ public class NaiveStrategy implements Strategy{
 				Point2D.Double targetPosHelp = null;
 				//enemyBot.posLog.get(ptMinDiffStart+6+i)
 				try{
-				while(me.ownPos.distance(targetPos) >(20-3*firepower)*i){
+				while((me.ownPos.distance(targetPos) >(20-3*firepower)*i) && ((ptMinDiffEnd+i) < enemy.getPosLogSize()))
+				{
 //					System.out.println("own: " + me.toString() + "   enemy: " + targetPos.toString() + "    distance: " + me.ownPos.distance(targetPos));
 //					System.out.println(enemy.getPosLogAt(enemy.getPosLogSize()-1));
 //					System.out.println(i);
@@ -156,7 +165,7 @@ public class NaiveStrategy implements Strategy{
 		}
 	}
 	
-	private double calcFirepower(Enemy enemy, double heuristic){
+	private double calcFirepower(Enemy enemy, double heuristic){ 
 		double firepower;
 		if(enemy.getEnergy() < 16.0){
 				if(enemy.getEnergy()<4.0){
@@ -212,11 +221,16 @@ public class NaiveStrategy implements Strategy{
 	}
 	
 	/**
-	 * Fires on a specific 2D-Point on the mapS
+	 * Fires on a specific 2D-Point on the map
 	 */
 	private void fireAt(KnackOnOne me, double firepower, Point2D.Double p){
 		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAngle(p, me.ownPos) - me.getGunHeadingRadians()));
 		me.setFire(firepower);
+	    //logging
+	    if(firepower >0.0 )
+	    {
+		    me.addFire();
+	    }
 	}
 	
 	private Point2D.Double calcMovingPoint(KnackOnOne me, double bearing, Point2D.Double lastMovingPoint, Point2D.Double enemyPos){

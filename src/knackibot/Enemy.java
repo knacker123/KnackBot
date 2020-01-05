@@ -16,7 +16,7 @@ public class Enemy{
 	private double velocity;
 	private double bearingRadian;
 	private double distance;
-	private double heading;
+	private double headingRadian;
 	
 	private int nrBulletsHitMeThisRound;
 	private int nrBulletsFiredThisRound;
@@ -29,7 +29,7 @@ public class Enemy{
 		this.distance = 0;
 		this.bearingRadian = 0;
 		this.velocity = 0;
-		this.heading = 0;
+		this.headingRadian = 0;
 		
 		this.nrBulletsFiredThisRound = 0;
 		this.nrBulletsHitMeThisRound = 0;
@@ -48,7 +48,7 @@ public class Enemy{
 		this.velocity = e.getVelocity();
 		this.bearingRadian = e.getBearingRadians();
 		this.distance = e.getDistance();
-		this.heading = e.getHeadingRadians();
+		this.headingRadian = e.getHeadingRadians();
 
 		//detect if Bullet was fired
 		double energyDifference = energyLastTurn - this.energy;

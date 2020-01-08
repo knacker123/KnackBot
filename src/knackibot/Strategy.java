@@ -4,8 +4,27 @@ package knackibot;
 /**
  * @author Robert Guder
  */
-public interface Strategy {
+public class Strategy {
 
-	void move(Enemy enemy, KnackOnOne me);
-	void shoot(Enemy enemy, KnackOnOne me);
+	TargetStrategy targeting = new PatternMatchingTargeting();
+	MovementStrategy moving = new StopAndGoMovement();
+	
+	void setTargetStrategy(TargetStrategy targetStrategy)
+	{
+		this.targeting = targetStrategy;
+	}
+	
+	void setMovementStrategy(MovementStrategy moveStrat)
+	{
+		this.moving = moveStrat;
+	}
+
+	void move(Enemy enemy, KnackOnOne me)
+	{
+		this.moving.move(enemy, me);
+	}
+	void shoot(Enemy enemy, KnackOnOne me)
+	{
+		this.targeting.shoot(enemy, me);
+	}
 }

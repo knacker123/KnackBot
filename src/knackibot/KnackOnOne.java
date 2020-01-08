@@ -14,7 +14,7 @@ import knackibot.Enemy;
 public class KnackOnOne extends AdvancedRobot {
 	
 	Enemy enemy;
-	NaiveStrategy strategy;
+	Strategy strategy;
 	Point2D.Double ownPos;
 	int bulletsFired = 0;
 	int nrOfBulletsHitEnemy = 0;
@@ -27,7 +27,7 @@ public class KnackOnOne extends AdvancedRobot {
 
 		// Initialize
 		enemy = new Enemy();
-		strategy = new NaiveStrategy();
+		strategy = new Strategy();
 		
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
@@ -89,11 +89,7 @@ public class KnackOnOne extends AdvancedRobot {
 		this.nrOfBulletsHitEnemy++;
 		this.bulletsFired++;
 	}
-	
-	public void addFire()
-	{
-		//this.bulletsFired++;
-	}
+
 	// One of my bullets hit another bullet
 	public void onBulletHitBullet(BulletHitBulletEvent event)
 	{
@@ -144,7 +140,7 @@ public class KnackOnOne extends AdvancedRobot {
 	
 	//Debugging -----------------------------------
 	public void onPaint(Graphics2D g){
-		g.setColor(java.awt.Color.GREEN);
+	/*	g.setColor(java.awt.Color.GREEN);
 		//drawing the predicted way for the enemyBot
 		try{
 			for(int i=0; i<strategy.getPosPrediction().size()-1; i++){
@@ -158,7 +154,6 @@ public class KnackOnOne extends AdvancedRobot {
 			System.out.println("Exception in printing PosPrediction");
 		}
 		System.out.println("Size PosPrediction: " + strategy.getPosPrediction().size());
-
 		System.out.println("Size debug_PosPrediction: " + strategy.getPosPrediction().size());
 		
 		g.setColor(java.awt.Color.RED);
@@ -175,11 +170,6 @@ public class KnackOnOne extends AdvancedRobot {
 			System.out.println("Exception in printin debug_PosPrediction");
 		}
 		
-		
-		//draw position of KnackBot
-		g.setColor(java.awt.Color.BLACK);
-		g.drawRect((int)getX(), (int)getY(), 5, 5);
-		
 		//drawPosition of Enemy
 		g.setColor(java.awt.Color.BLUE);
 		g.drawRect((int)enemy.getPosLogAt(enemy.getPosLogSize()-1).x, (int)enemy.getPosLogAt(enemy.getPosLogSize()-1).y, 5, 5);  
@@ -188,5 +178,5 @@ public class KnackOnOne extends AdvancedRobot {
 		g.setColor(java.awt.Color.CYAN);
 		int predLastIt = strategy.getPosPrediction().size()-1;
 		g.drawRect((int)strategy.getPosPrediction().get(predLastIt).getX(), (int)strategy.getPosPrediction().get(predLastIt).getY(), 8, 8);
-	}
+*/	}
 }

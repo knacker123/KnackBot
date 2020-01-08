@@ -11,6 +11,8 @@ public class MyUtils
 {
 	/**
 	 * calculates the angle between 3 points
+	 * Note: In Robocode angles are clockwise!
+	 * 
 	 * prev   next
 	 *  \     /
 	 *   \   /
@@ -19,13 +21,9 @@ public class MyUtils
 	 *   center
 	 */
 	public static double angleBetween(Point2D.Double center, Point2D.Double next, Point2D.Double  previous) {
-		double angle = (Math.atan2(next.getX() - center.getX(),next.getY() - center.getY())-
-	                        Math.atan2(previous.getX() - center.getX(),previous.getY() - center.getY()));
+		double angle = (Math.atan2(next.getX() - center.getX(), next.getY() - center.getY())-
+	                        Math.atan2(previous.getX() - center.getX(), previous.getY() - center.getY()));
 		
-		//TODO: check if the following line is correct...
-		if(angle<0){
-			angle+= 2*Math.PI;
-		}
 		
 		return angle;
 	}
@@ -37,11 +35,13 @@ public class MyUtils
 	 * - absolute angle between 12 o'clock and p2
 	 */
 	public static Point2D.Double calcPoint(Point2D.Double p, double dist, double ang) {
-		return new Point2D.Double(p.x + dist*Math.sin(ang), p.y + dist*Math.cos(ang)); //TODO use radiant mathmatical formula instead of conversion
+		return new Point2D.Double(p.x + dist*Math.sin(ang), p.y + dist*Math.cos(ang));
 	}
 
 	/*
 	 * Calculated absolute angle between line of p1 to p2 and 12 o'clock
+	 * Note: In Robocode angles are clockwise!
+	 * 
 	 *     x p2
 	 * |  /
 	 * | /
@@ -61,5 +61,18 @@ public class MyUtils
 	    BigDecimal bd = new BigDecimal(Double.toString(value));
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
+	}
+	
+	public static boolean isInsideBattleField(Point2D.Double p)
+	{
+		if(p.x > 0 && p.x < 800 )
+		{
+			if(p.y >0 && p.y < 600)
+			{
+				return true;
+			}
+		}
+		return false;
+		
 	}
 }

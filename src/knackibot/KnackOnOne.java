@@ -16,6 +16,7 @@ public class KnackOnOne extends AdvancedRobot {
 	Enemy enemy;
 	Strategy strategy;
 	Point2D.Double ownPos;
+	Logger logger = new Logger();
 	int bulletsFired = 0;
 	int nrOfBulletsHitEnemy = 0;
 	
@@ -139,31 +140,31 @@ public class KnackOnOne extends AdvancedRobot {
 	}
 	
 	//Debugging -----------------------------------
-	public void onPaint(Graphics2D g){
-	/*	g.setColor(java.awt.Color.GREEN);
+	public void onPaint(Graphics2D g){	
+		g.setColor(java.awt.Color.GREEN);
 		//drawing the predicted way for the enemyBot
 		try{
-			for(int i=0; i<strategy.getPosPrediction().size()-1; i++){
-			g.drawLine((int)strategy.getPosPrediction().get(i).getX(),
-					(int)strategy.getPosPrediction().get(i).getY(),
-					(int)strategy.getPosPrediction().get(i+1).getX(),
-					(int)strategy.getPosPrediction().get(i+1).getY());
+			for(int i=0; i<logger.getPosPrediction().size()-1; i++){
+			g.drawLine((int)logger.getPosPrediction().get(i).getX(),
+					(int)logger.getPosPrediction().get(i).getY(),
+					(int)logger.getPosPrediction().get(i+1).getX(),
+					(int)logger.getPosPrediction().get(i+1).getY());
 			}
 		}	
 		catch(Exception e){
 			System.out.println("Exception in printing PosPrediction");
 		}
-		System.out.println("Size PosPrediction: " + strategy.getPosPrediction().size());
-		System.out.println("Size debug_PosPrediction: " + strategy.getPosPrediction().size());
+		System.out.println("Size PosPrediction: " + logger.getPosPrediction().size());
+		System.out.println("Size debug_PosPrediction: " + logger.getPosPrediction().size());
 		
 		g.setColor(java.awt.Color.RED);
 		//drawing the predicted way for the enemyBot
 		try{
-			for(int i=0; i<strategy.getDebug_PosPrediction().size()-1; i++){
-			g.drawLine((int)strategy.getDebug_PosPrediction().get(i).getX(),
-					(int)strategy.getDebug_PosPrediction().get(i).getY(),
-					(int)strategy.getDebug_PosPrediction().get(i+1).getX(),
-					(int)strategy.getDebug_PosPrediction().get(i+1).getY());
+			for(int i=0; i<logger.getDebug_PosPrediction().size()-1; i++){
+			g.drawLine((int)logger.getDebug_PosPrediction().get(i).getX(),
+					(int)logger.getDebug_PosPrediction().get(i).getY(),
+					(int)logger.getDebug_PosPrediction().get(i+1).getX(),
+					(int)logger.getDebug_PosPrediction().get(i+1).getY());
 			}
 		}	
 		catch(Exception e){
@@ -176,7 +177,7 @@ public class KnackOnOne extends AdvancedRobot {
 		
 		//draw position to be shot at
 		g.setColor(java.awt.Color.CYAN);
-		int predLastIt = strategy.getPosPrediction().size()-1;
-		g.drawRect((int)strategy.getPosPrediction().get(predLastIt).getX(), (int)strategy.getPosPrediction().get(predLastIt).getY(), 8, 8);
-*/	}
+		int predLastIt = logger.getPosPrediction().size()-1;
+		g.drawRect((int)logger.getPosPrediction().get(predLastIt).getX(), (int)logger.getPosPrediction().get(predLastIt).getY(), 8, 8);
+	}
 }

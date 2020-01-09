@@ -11,16 +11,6 @@ public class PatternMatchingTargeting implements TargetStrategy{
 	public List<Point2D.Double> posPrediction = new ArrayList<Point2D.Double>();  //a list, which contains the predicted positions for the enemyBot until the bullet should hit the target
 	public List<Point2D.Double> debug_RealPosToPosPrediction = new ArrayList<Point2D.Double>();  
 	
-	public List<Point2D.Double> getPosPrediction()
-	{
-		return posPrediction;
-	}
-	
-	public List<Point2D.Double> getDebug_PosPrediction()
-	{
-		return debug_RealPosToPosPrediction;
-	}
-	
 	@Override
 	public void shoot(Enemy enemy, KnackOnOne me) 
 	{
@@ -119,6 +109,9 @@ public class PatternMatchingTargeting implements TargetStrategy{
 					}
 			}
 		}
+		//		Graphical Logging
+		me.logger.setPosPrediction(posPrediction);
+		me.logger.setDebugRealPosToPosPrediction(debug_RealPosToPosPrediction);
 	}
 	
 	private double calcFirepower(Enemy enemy, double heuristic){ 

@@ -1,6 +1,5 @@
 package knackibot;
 
-
 /**
  * @author Robert Guder
  */
@@ -12,6 +11,11 @@ public class Strategy {
 	void setTargetStrategy(TargetStrategy targetStrategy)
 	{
 		this.targeting = targetStrategy;
+	}
+	
+	TargetStrategy getTargetStrategy()
+	{
+		return this.targeting;
 	}
 	
 	void setMovementStrategy(MovementStrategy moveStrat)

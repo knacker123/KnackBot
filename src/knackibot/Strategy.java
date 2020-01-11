@@ -1,3 +1,8 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 /**
@@ -5,8 +10,15 @@ package knackibot;
  */
 public class Strategy {
 
-	TargetStrategy targeting = new PatternMatchingTargeting();
-	MovementStrategy moving = new StopAndGoMovement();
+	TargetStrategy targeting;
+	MovementStrategy moving;
+	
+	public Strategy()
+	{
+		System.out.println("Generated default strategies");
+		this.targeting = new PatternMatchingTargeting();
+		this.moving = new StopAndGoMovement();
+	}
 	
 	void setTargetStrategy(TargetStrategy targetStrategy)
 	{

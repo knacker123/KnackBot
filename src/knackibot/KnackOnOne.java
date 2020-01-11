@@ -1,7 +1,14 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
 import robocode.*;
@@ -14,7 +21,7 @@ import knackibot.Enemy;
 public class KnackOnOne extends AdvancedRobot {
 	
 	Enemy enemy;
-	Strategy strategy;
+	static Strategy strategy = new Strategy();
 	Point2D.Double ownPos;
 	Logger logger = new Logger();
 	int bulletsFired = 0;
@@ -28,7 +35,7 @@ public class KnackOnOne extends AdvancedRobot {
 
 		// Initialize
 		enemy = new Enemy();
-		strategy = new Strategy();
+		strategy.setMovementStrategy(new RandomMovement(this, enemy));
 		
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
@@ -100,8 +107,20 @@ public class KnackOnOne extends AdvancedRobot {
 	//possibility to safe statistics at the end of a round
 	public void onRoundEnded(RoundEndedEvent event)
 	{
+		double accuracy = (double)this.nrOfBulletsHitEnemy/(double)this.bulletsFired;
+		
+		// Strategical decicions
+		if(accuracy < 0.2)
+		{
+			// TODO change strategies
+			//System.out.println("adapted Startegies strategies");
+			//strategy.setTargetStrategy(new NaiveTargetStrategy());
+			//strategy.setMovementStrategy(new FollowEnemyMovement());
+		}
+		
+		// Logging TODO maybe move to Logger
 		System.out.println("#### Statisctics fot this round #####");
-		System.out.println("Accuracy: " + (double)this.nrOfBulletsHitEnemy/(double)this.bulletsFired);
+		System.out.println("Accuracy: " + accuracy);
 		System.out.println("Number of Bullets fired: " + this.bulletsFired);
 		System.out.println("Number of Bullets hit Enemy: " + this.nrOfBulletsHitEnemy);
 		System.out.println("######################################");
@@ -170,6 +189,12 @@ public class KnackOnOne extends AdvancedRobot {
 		catch(Exception e){
 			System.out.println("Exception in printin debug_PosPrediction");
 		}
+		
+		//draw circle on which we increase firepower to maximum
+		g.setColor(java.awt.Color.BLACK);
+		double radius = 120;
+		Shape theCircle = new Ellipse2D.Double(this.getX() - radius, this.getY() - radius, 2.0 * radius, 2.0 * radius);
+		g.draw(theCircle);
 		
 		//drawPosition of Enemy
 		g.setColor(java.awt.Color.BLUE);

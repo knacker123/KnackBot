@@ -1,3 +1,8 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 import java.util.*;
@@ -104,6 +109,16 @@ public class Enemy{
 		p.x = MyUtils.roundDouble(p.x, 3);
 		p.y = MyUtils.roundDouble(p.y, 3);
 		Enemy.posLog.add(p);
+	}
+	
+	/**
+	 * Get the enemys current position. Returns the last element of the posLog.
+	 * 
+	 * @return Current position of the enemy bot
+	 */
+	public Point2D.Double getCurrentPosition()
+	{
+		return Enemy.posLog.get(getPosLogSize()-1);
 	}
 	
 	/*

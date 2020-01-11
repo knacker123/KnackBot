@@ -1,3 +1,10 @@
+/**
+ * TODO: This class needs complete rework, as it seems buggy
+ * 
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 import java.awt.geom.Point2D;
@@ -22,7 +29,7 @@ public class StopAndGoMovement implements MovementStrategy
 
 	private Point2D.Double calcMovingPoint(KnackOnOne me, double bearing, Point2D.Double lastMovingPoint, Point2D.Double enemyPos){
 		//angle to enemy is to direct, so change direction
-		if(Math.abs(bearing)<Math.PI/6 || Math.abs(bearing)<5*Math.PI/6){
+		/*if(Math.abs(bearing)<Math.PI/6 || Math.abs(bearing)<5*Math.PI/6){ // TODO: this line is wrong. Use correct angle
 			Point2D.Double result = MyUtils.calcPoint(me.ownPos, Math.random()*300, Math.PI+bearing);
 			if(result.x<0){
 				result.setLocation(100, result.y);
@@ -40,8 +47,9 @@ public class StopAndGoMovement implements MovementStrategy
 		}
 		else{
 			//dont change moving point
-			return lastMovingPoint;
-		}
+			return lastMovingPoint; 
+		} */
+	return(new Point2D.Double(Math.random()*700, Math.random()*500));
 	}
 	
 	private void simpleStopAndGo(KnackOnOne me, boolean move, Point2D.Double movingPoint){
@@ -56,7 +64,7 @@ public class StopAndGoMovement implements MovementStrategy
 
 	private void moveToPoint(KnackOnOne me, Point2D.Double p)
 	{
-		me.setTurnRightRadians(Utils.normalRelativeAngle(me.getHeadingRadians() -  MyUtils.calcAngle(me.ownPos, p)));
+		me.setTurnRightRadians(MyUtils.calcAbsoluteBearing(me.ownPos, p) - Utils.normalRelativeAngle(me.getHeadingRadians()));
 		me.setAhead(me.ownPos.distance(p));
 	}
 }

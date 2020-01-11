@@ -1,3 +1,8 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 import java.awt.geom.Point2D;
@@ -57,7 +62,7 @@ public class PatternMatchingTargeting implements TargetStrategy{
 					ptMinDiffEnd = i+(patternLength-2);
 				}
 			}
-			System.out.println("Heuristik: " + sumHeuristicMin);
+			//System.out.println("Heuristik: " + sumHeuristicMin);
 			double firepower = calcFirepower(enemy, sumHeuristicMin);
 			int i=1;
 			boolean fire = true;
@@ -66,7 +71,7 @@ public class PatternMatchingTargeting implements TargetStrategy{
 
 			posPrediction.add(targetPos);
 			Point2D.Double targetPosHelp = null;
-			if(enemy.getDistance() < 80)
+			if(enemy.getDistance() < 120)
 			{
 				fireAt(me, firepower, targetPos);
 			}
@@ -87,13 +92,13 @@ public class PatternMatchingTargeting implements TargetStrategy{
 						i++;
 						if(!(me.ownPos.distance(targetPos) >(20-3*firepower)*i))
 						{
-							System.out.println("Bullet target reached");
+							//System.out.println("Bullet target reached");
 							fire = true;
 						}
 						else if(!((ptMinDiffEnd+1+i) < enemy.getPosLogSize()))
 						{
 							fire = false; //don't shoot, because calculation is crap
-							System.out.println("Targetprediction cancelled because of stackoverflow");
+							//System.out.println("Targetprediction cancelled because of stackoverflow");
 						}
 					}
 					}catch(Exception e){
@@ -103,7 +108,7 @@ public class PatternMatchingTargeting implements TargetStrategy{
 					
 					/*** Firing ***/
 					//only fire if predicted location is inside battlefield or enemy is close to me
-					if(MyUtils.isInsideBattleField(targetPos) && fire)
+					if(MyUtils.isInsideBattleField(targetPos, 0) && fire)
 					{
 						fireAt(me, firepower, targetPos);
 					}
@@ -177,7 +182,7 @@ public class PatternMatchingTargeting implements TargetStrategy{
 	 * Fires on a specific 2D-Point on the map
 	 */
 	private void fireAt(KnackOnOne me, double firepower, Point2D.Double p){
-		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAngle(p, me.ownPos) - me.getGunHeadingRadians()));
+		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAbsoluteBearing(p, me.ownPos) - me.getGunHeadingRadians()));
 		me.setFire(firepower);
 	}
 }

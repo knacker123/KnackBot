@@ -1,7 +1,11 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
-import java.awt.geom.Point2D;
-
-public interface MovementStrategy {
+public interface MovementStrategy 
+{	
 	void move(Enemy enemy, KnackOnOne me);
 }

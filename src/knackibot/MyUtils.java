@@ -1,3 +1,8 @@
+/**
+ * This code is released under the RoboWiki Public Code Licence (RWPCL), datailed on:
+ * http://robowiki.net/?RWPCL
+ */
+
 package knackibot;
 
 import java.awt.geom.Point2D;
@@ -48,8 +53,8 @@ public class MyUtils
 	 * |/
 	 * x p1
 	 */
-	public static double calcAngle(Point2D.Double p2,Point2D.Double p1){
-		return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+	public static double calcAbsoluteBearing(Point2D.Double target, Point2D.Double source){
+		return Math.atan2(target.x - source.x, target.y - source.y);
 	}
 	
 	/*
@@ -63,11 +68,21 @@ public class MyUtils
 	    return bd.doubleValue();
 	}
 	
-	public static boolean isInsideBattleField(Point2D.Double p)
+	/**
+	 *  Possibility to check, whether Point p is inside the battlefield.
+	 *  One can choose to additionally consider a margin. If margin is 0, 
+	 *  the rectangle ends with the battlefield, if margin > 0, another, smaller rectangle
+	 *  is considered.
+	 *  
+	 * @param p Point which is checked to be inside a certain rectangle
+	 * @param margin margin to the boarder of the battlefield
+	 * @return true, if p is inside battlefield-margin, else false
+	 */
+	public static boolean isInsideBattleField(Point2D.Double p, double margin)
 	{
-		if(p.x > 0 && p.x < 800 )
+		if( (p.x > (0 + margin) )  && (p.x < (800 + margin)) )
 		{
-			if(p.y >0 && p.y < 600)
+			if( (p.y > (0 + margin)) && (p.y < ( 600 + margin)))
 			{
 				return true;
 			}

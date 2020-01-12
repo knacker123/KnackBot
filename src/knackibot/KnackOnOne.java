@@ -107,10 +107,11 @@ public class KnackOnOne extends AdvancedRobot {
 	//possibility to safe statistics at the end of a round
 	public void onRoundEnded(RoundEndedEvent event)
 	{
-		double accuracy = (double)this.nrOfBulletsHitEnemy/(double)this.bulletsFired;
-		
+		double myAccuracy = (double)this.nrOfBulletsHitEnemy/(double)this.bulletsFired;
+		double enemyAccuracy = (double)enemy.getNrBulletsHitKnackiThisRound()/(double)enemy.getNrBulletsFiredThisRound();
+				
 		// Strategical decicions
-		if(accuracy < 0.2)
+		if(myAccuracy < 0.2)
 		{
 			// TODO change strategies
 			//System.out.println("adapted Startegies strategies");
@@ -120,10 +121,14 @@ public class KnackOnOne extends AdvancedRobot {
 		
 		// Logging TODO maybe move to Logger
 		System.out.println("#### Statisctics fot this round #####");
-		System.out.println("Accuracy: " + accuracy);
+		System.out.println("My own Accuracy: " + myAccuracy);
 		System.out.println("Number of Bullets fired: " + this.bulletsFired);
 		System.out.println("Number of Bullets hit Enemy: " + this.nrOfBulletsHitEnemy);
 		System.out.println("######################################");
+		System.out.println("Enemy Accuracy: " + enemyAccuracy);
+		System.out.println("#Enemy Bullets fired: " + enemy.getNrBulletsFiredThisRound());
+		System.out.println("#Number of Bullets hit me: " + enemy.getNrBulletsHitKnackiThisRound());
+		System.out.println("######################################");		
 		
 		this.nrOfBulletsHitEnemy = 0;
 		this.bulletsFired = 0;

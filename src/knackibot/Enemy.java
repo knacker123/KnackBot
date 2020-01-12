@@ -23,7 +23,7 @@ public class Enemy{
 	private double distance;
 	private double headingRadian;
 	
-	private int nrBulletsHitMeThisRound;
+	private int nrBulletsHitKnackiThisRound;
 	private int nrBulletsFiredThisRound;
 	
 	static private List<Point2D.Double> posLog = new ArrayList<Point2D.Double>();
@@ -37,7 +37,7 @@ public class Enemy{
 		this.headingRadian = 0;
 		
 		this.nrBulletsFiredThisRound = 0;
-		this.nrBulletsHitMeThisRound = 0;
+		this.nrBulletsHitKnackiThisRound = 0;
 		
 
 		//posLog = new ArrayList<Point2D.Double>();
@@ -67,7 +67,7 @@ public class Enemy{
 	
 	public void addShotHitMe()
 	{
-		this.nrBulletsHitMeThisRound++;
+		this.nrBulletsHitKnackiThisRound++;
 	}
 	
 	public double getEnergy()
@@ -93,6 +93,11 @@ public class Enemy{
 	public int getNrBulletsFiredThisRound()
 	{
 		return this.nrBulletsFiredThisRound;
+	}
+	
+	public int getNrBulletsHitKnackiThisRound()
+	{
+		return this.nrBulletsHitKnackiThisRound;
 	}
 	/*************************************************
 	 * Position Logging

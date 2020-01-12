@@ -62,7 +62,9 @@ public class PatternMatchingTargeting implements TargetStrategy{
 					ptMinDiffEnd = i+(patternLength-2);
 				}
 			}
-			//System.out.println("Heuristik: " + sumHeuristicMin);
+
+			Logger.printLogging(KindOfLogging.TARGETING, "Heuristik: " + sumHeuristicMin);
+			
 			double firepower = calcFirepower(enemy, sumHeuristicMin);
 			int i=1;
 			boolean fire = true;
@@ -92,13 +94,13 @@ public class PatternMatchingTargeting implements TargetStrategy{
 						i++;
 						if(!(me.ownPos.distance(targetPos) >(20-3*firepower)*i))
 						{
-							//System.out.println("Bullet target reached");
+							//Logger.printLogging(KindOfLogging.TARGETING, "Bullet target reached");
 							fire = true;
 						}
 						else if(!((ptMinDiffEnd+1+i) < enemy.getPosLogSize()))
 						{
 							fire = false; //don't shoot, because calculation is crap
-							//System.out.println("Targetprediction cancelled because of stackoverflow");
+							Logger.printLogging(KindOfLogging.TARGETING, "Targetprediction cancelled because of stackoverflow");
 						}
 					}
 					}catch(Exception e){

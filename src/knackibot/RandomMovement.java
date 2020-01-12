@@ -50,16 +50,6 @@ public class RandomMovement implements MovementStrategy{
         me.setMaxVelocity(Math.abs(me.getTurnRemaining()) > 33 ? 0 : MAX_VELOCITY);
     }
     
-    static Point2D.Double vectorToLocation(double angle, double length, Point2D.Double sourceLocation) {
-    	return vectorToLocation(angle, length, sourceLocation, new Point2D.Double());
-    }
- 
-    static Point2D.Double vectorToLocation(double angle, double length, Point2D.Double sourceLocation, Point2D.Double targetLocation) {
-        targetLocation.setLocation(sourceLocation.getX() + Math.sin(angle) * length,
-            sourceLocation.getY() + Math.cos(angle) * length);
-	return targetLocation;
-    }
-    
 	@Override
     // Always try to move a bit further away from the enemy.
     // Only when a wall forces us we will close in on the enemy. We never bounce off walls.
@@ -69,17 +59,14 @@ public class RandomMovement implements MovementStrategy{
 		double localMovementLateralAngle = this.movementLateralAngle;
 		Point2D.Double robotDestination = null;
 		double tries = 0;
+		
+		//try until destination is inside of battlefield or 100 tries are exceeded
 		do {
 		    robotDestination = MyUtils.calcPoint(enemy.getCurrentPosition(), 
 		    		enemy.getDistance() * (1.1 - (tries % 100) / 100.0), 
-		    		MyUtils.calcAbsoluteBearing(me.ownPos, enemy.getCurrentPosition()) + localMovementLateralAngle);
-		    
-		   // robotDestination1 = vectorToLocation(MyUtils.calcAbsoluteBearing(me.ownPos, enemy.getCurrentPosition()) + movementLateralAngle,
-			//	    enemy.getDistance() * (1.1 - tries / 100.0), enemy.getCurrentPosition());
-		    
+		    		MyUtils.calcAbsoluteBearing(me.ownPos, enemy.getCurrentPosition()) + localMovementLateralAngle);	    
 		    tries++;
 		} while (tries < 100 && !fieldRectangle(WALL_MARGIN).contains(robotDestination));
-		System.out.println("Location to go: " + robotDestination.x + " " + robotDestination.y);
 		goTo(robotDestination);		
 	}
 

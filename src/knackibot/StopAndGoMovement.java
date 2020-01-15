@@ -64,7 +64,7 @@ public class StopAndGoMovement implements MovementStrategy
 
 	private void moveToPoint(KnackOnOne me, Point2D.Double p)
 	{
-		me.setTurnRightRadians(MyUtils.calcAbsoluteBearing(p, me.ownPos) - Utils.normalRelativeAngle(me.getHeadingRadians()));
+		me.setTurnRightRadians(MyUtils.calcAbsBearing(me.ownPos, p) - Utils.normalRelativeAngle(me.getHeadingRadians()));
 		me.setAhead(me.ownPos.distance(p));
 	}
 }

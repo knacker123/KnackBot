@@ -184,7 +184,7 @@ public class PatternMatchingTargeting implements TargetStrategy{
 	 * Fires on a specific 2D-Point on the map
 	 */
 	private void fireAt(KnackOnOne me, double firepower, Point2D.Double p){
-		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAbsoluteBearing(p, me.ownPos) - me.getGunHeadingRadians()));
+		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAbsBearing(me.ownPos, p) - me.getGunHeadingRadians()));
 		me.setFire(firepower);
 	}
 }

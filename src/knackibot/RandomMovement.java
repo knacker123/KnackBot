@@ -42,7 +42,7 @@ public class RandomMovement implements MovementStrategy{
  
     //TODO: same implementation as "StopAndGo.moveToPoint". Think about refactoring
     void goTo(Point2D.Double destination) {
-        double angle = Utils.normalRelativeAngle(MyUtils.calcAbsoluteBearing(destination, me.ownPos) - me.getHeadingRadians());
+        double angle = Utils.normalRelativeAngle(MyUtils.calcAbsBearing(me.ownPos, destination) - me.getHeadingRadians());
         double turnAngle = Math.atan(Math.tan(angle));
         me.setTurnRightRadians(turnAngle);
         me.setAhead(me.ownPos.distance(destination) * (angle == turnAngle ? 1 : -1));
@@ -64,7 +64,7 @@ public class RandomMovement implements MovementStrategy{
 		do {
 		    robotDestination = MyUtils.calcPoint(enemy.getCurrentPosition(), 
 		    		enemy.getDistance() * (1.1 - (tries % 100) / 100.0), 
-		    		MyUtils.calcAbsoluteBearing(me.ownPos, enemy.getCurrentPosition()) + localMovementLateralAngle);	    
+		    		MyUtils.calcAbsBearing(enemy.getCurrentPosition(), me.ownPos) + localMovementLateralAngle);	    
 		    tries++;
 		} while (tries < 100 && !fieldRectangle(WALL_MARGIN).contains(robotDestination));
 		goTo(robotDestination);		

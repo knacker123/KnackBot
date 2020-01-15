@@ -53,7 +53,7 @@ public class MyUtils
 	 * |/
 	 * x p1
 	 */
-	public static double calcAbsoluteBearing(Point2D.Double target, Point2D.Double source){
+	public static double calcAbsBearing(Point2D.Double source, Point2D.Double target){
 		return Math.atan2(target.x - source.x, target.y - source.y);
 	}
 	
@@ -90,4 +90,16 @@ public class MyUtils
 		return false;
 		
 	}
+	
+	public static double getBulletDamage(double firepower)
+	{
+		return (4*firepower+ 2*Math.max(firepower-1, 0 ));
+	}
+	
+	public static double getBulletVelocity(double firepower)
+	{
+		return (20 - 3*firepower);
+	}
+	
+	
 }

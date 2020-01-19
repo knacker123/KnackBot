@@ -101,5 +101,10 @@ public class MyUtils
 		return (20 - 3*firepower);
 	}
 	
+	public static double maxEscapeAngle(double firepower)
+	{
+		return Math.asin(8 / getBulletVelocity(firepower));
+	}
+	
 	
 }

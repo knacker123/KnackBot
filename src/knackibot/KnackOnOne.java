@@ -36,6 +36,7 @@ public class KnackOnOne extends AdvancedRobot {
 		// Initialize
 		enemy = new Enemy();
 		strategy.setMovementStrategy(new RandomMovement(this, enemy));
+		strategy.setTargetStrategy(new GuessFactorTargeting());
 		
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);

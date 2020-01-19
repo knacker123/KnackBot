@@ -11,7 +11,8 @@ import java.util.List;
 
 import robocode.util.Utils;
 
-public class PatternMatchingTargeting implements TargetStrategy{
+public class PatternMatchingTargeting implements TargetStrategy
+{
 
 	public List<Point2D.Double> posPrediction = new ArrayList<Point2D.Double>();  //a list, which contains the predicted positions for the enemyBot until the bullet should hit the target
 	public List<Point2D.Double> debug_RealPosToPosPrediction = new ArrayList<Point2D.Double>();  

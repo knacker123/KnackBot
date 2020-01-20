@@ -20,8 +20,10 @@ public class Enemy{
 	private double energy;
 	private double velocity;
 	private double bearingRadian;
+	private double lastBearingRadian;
 	private double distance;
 	private double headingRadian;
+	private String name;
 	
 	private int nrBulletsHitKnackiThisRound;
 	private int nrBulletsFiredThisRound;
@@ -33,8 +35,10 @@ public class Enemy{
 		this.energy = 100;
 		this.distance = 0;
 		this.bearingRadian = 0;
+		this.lastBearingRadian = 0;
 		this.velocity = 0;
 		this.headingRadian = 0;
+		this.name = "";
 		
 		this.nrBulletsFiredThisRound = 0;
 		this.nrBulletsHitKnackiThisRound = 0;
@@ -51,14 +55,16 @@ public class Enemy{
 		//update EnemyBot
 		this.energy = e.getEnergy();
 		this.velocity = e.getVelocity();
+		this.lastBearingRadian = bearingRadian;
 		this.bearingRadian = e.getBearingRadians();
 		this.distance = e.getDistance();
 		this.headingRadian = e.getHeadingRadians();
+		this.name = e.getName();	// TODO: this is done every round. Maybe there is a more effective solution
 
 		//detect if Bullet was fired
 		double energyDifference = energyLastTurn - this.energy;
-		if(energyDifference > 0.1 && energyDifference <3.0)
-		{
+		if(energyDifference > 0.1 && energyDifference <3.0) // TODO: inacurate, as it is not considered, when my bullet hit the enemy
+		{ 
 			nrBulletsFiredThisRound++;
 		}
 		
@@ -84,6 +90,11 @@ public class Enemy{
 	{
 		return this.bearingRadian;
 	}
+
+	public double getLastBearingRadians()
+	{
+		return this.lastBearingRadian;
+	}
 	
 	public double getDistance()
 	{
@@ -98,6 +109,11 @@ public class Enemy{
 	public int getNrBulletsHitKnackiThisRound()
 	{
 		return this.nrBulletsHitKnackiThisRound;
+	}
+	
+	public String getName()
+	{
+		return this.name;
 	}
 	/*************************************************
 	 * Position Logging

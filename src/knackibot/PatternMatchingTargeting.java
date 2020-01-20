@@ -16,6 +16,7 @@ public class PatternMatchingTargeting implements TargetStrategy
 
 	public List<Point2D.Double> posPrediction = new ArrayList<Point2D.Double>();  //a list, which contains the predicted positions for the enemyBot until the bullet should hit the target
 	public List<Point2D.Double> debug_RealPosToPosPrediction = new ArrayList<Point2D.Double>();  
+	private String name = "PatternMatchingTargeting";
 	
 	@Override
 	public void shoot(Enemy enemy, KnackOnOne me) 
@@ -187,5 +188,10 @@ public class PatternMatchingTargeting implements TargetStrategy
 	private void fireAt(KnackOnOne me, double firepower, Point2D.Double p){
 		me.setTurnGunRightRadians(Utils.normalRelativeAngle(MyUtils.calcAbsBearing(me.ownPos, p) - me.getGunHeadingRadians()));
 		me.setFire(firepower);
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 }

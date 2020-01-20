@@ -11,6 +11,7 @@ import robocode.util.Utils;
 public class NaiveTargetStrategy implements TargetStrategy
 {
 
+	private String name = "NaiveTargeting";
 	@Override
 	public void shoot(Enemy enemy, KnackOnOne me) 
 	{
@@ -32,6 +33,11 @@ public class NaiveTargetStrategy implements TargetStrategy
 		    	me.fire(1);
 		    }
 		
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 	
 }

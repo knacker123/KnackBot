@@ -10,6 +10,13 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import robocode.*;
 import robocode.util.Utils;
@@ -72,7 +79,7 @@ public class KnackOnOne extends AdvancedRobot {
 	    // GUN
 	    strategy.shoot(enemy, this);    
 	}
-
+	
 	public void onBulletMissed(BulletMissedEvent e)
 	{
 		this.bulletsFired++;
@@ -105,6 +112,7 @@ public class KnackOnOne extends AdvancedRobot {
 		this.bulletsFired++;
 	}
 	
+	
 	//possibility to safe statistics at the end of a round
 	public void onRoundEnded(RoundEndedEvent event)
 	{
@@ -130,6 +138,75 @@ public class KnackOnOne extends AdvancedRobot {
 		System.out.println("#Enemy Bullets fired: " + enemy.getNrBulletsFiredThisRound());
 		System.out.println("#Number of Bullets hit me: " + enemy.getNrBulletsHitKnackiThisRound());
 		System.out.println("######################################");		
+		
+		
+		/*********** File Logging *******************************/
+
+/*		//if(event.getRound() == 10)
+		//{
+			String writeContent = "";
+			try {
+				System.out.println("Try reading");
+				BufferedReader reader = null;
+				try {
+					// Read file "count.dat" which contains 2 lines, a round count, and a battle count
+					reader = new BufferedReader(new FileReader(getDataFile("statistics.txt")));
+
+					// Try to get the counts
+					//roundCount = Integer.parseInt(reader.readLine());
+					//battleCount = Integer.parseInt(reader.readLine());
+					while(reader.readLine() != null)
+					{
+						writeContent += reader.readLine();
+						writeContent += "\n";
+
+						System.out.println("New iteration");
+						System.out.println(writeContent);
+					}
+				} finally {
+					if (reader != null) {
+						reader.close();
+					}
+				}
+			} catch (IOException e) {
+				// Something went wrong reading the file, reset to 0.
+				//roundCount = 0;
+				//battleCount = 0;
+				System.out.println("IOException reading statistics.txt");
+			} catch (NumberFormatException e) {
+				System.out.println("NumberFormatException reading statistics.txt");
+			}
+
+
+			PrintStream w = null;
+			try {
+				System.out.println("Trying to write");
+				w = new PrintStream(new RobocodeFileOutputStream(getDataFile("statistics.txt")));
+
+				w.print(writeContent);
+				w.println();
+				w.println("### " + enemy.getName());
+				w.println("## " + strategy.getTargetStrategyName());
+				w.println("# ->BulShot " + this.bulletsFired);
+				w.println("# ->BulHit" + this.nrOfBulletsHitEnemy);
+				w.println();
+
+				// PrintStreams don't throw IOExceptions during prints, they simply set a flag.... so check it here.
+				if (w.checkError()) {
+					out.println("I could not write the count!");
+				}
+			} catch (IOException e) {
+				out.println("IOException trying to write: ");
+				e.printStackTrace(out);
+			} finally {
+				if (w != null) {
+					w.close();
+				}
+			}
+//		} */
+		
+		
+		
 		
 		this.nrOfBulletsHitEnemy = 0;
 		this.bulletsFired = 0;

@@ -43,4 +43,10 @@ public class Strategy {
 	{
 		this.targeting.shoot(enemy, me);
 	}
+	
+	String getTargetStrategyName()
+	{
+		return this.targeting.getName();
+		
+	}
 }

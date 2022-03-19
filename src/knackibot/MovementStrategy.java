@@ -5,7 +5,6 @@
 
 package knackibot;
 
-public interface MovementStrategy 
-{	
-	void move(Enemy enemy, KnackOnOne me);
+public interface MovementStrategy {
+  void move(Enemy enemy, KnackOnOne me);
 }

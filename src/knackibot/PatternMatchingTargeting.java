@@ -13,14 +13,14 @@ import robocode.util.Utils;
 
 public class PatternMatchingTargeting implements TargetStrategy {
 
-  public List<Point2D.Double> posPrediction = new ArrayList<Point2D.Double>(); // a list, which
+  public List<Point2D.Double> posPrediction = new ArrayList<>(); // a list, which
                                                                                // contains the
                                                                                // predicted
                                                                                // positions for the
                                                                                // enemyBot until the
                                                                                // bullet should hit
                                                                                // the target
-  public List<Point2D.Double> debug_RealPosToPosPrediction = new ArrayList<Point2D.Double>();
+  public List<Point2D.Double> debug_RealPosToPosPrediction = new ArrayList<>();
   private String name = "PatternMatchingTargeting";
 
   @Override
@@ -89,10 +89,10 @@ public class PatternMatchingTargeting implements TargetStrategy {
             debug_RealPosToPosPrediction.add(enemy.getPosLogAt(ptMinDiffEnd + i));
 
             i++;
-            if (!(me.ownPos.distance(targetPos) > (20 - 3 * firepower) * i)) {
+            if (me.ownPos.distance(targetPos) <= (20 - 3 * firepower) * i) {
               // Logger.printLogging(KindOfLogging.TARGETING, "Bullet target reached");
               fire = true;
-            } else if (!((ptMinDiffEnd + 1 + i) < enemy.getPosLogSize())) {
+            } else if ((ptMinDiffEnd + 1 + i) >= enemy.getPosLogSize()) {
               fire = false; // don't shoot, because calculation is crap
               Logger.printLogging(KindOfLogging.TARGETING,
                   "Targetprediction cancelled because of stackoverflow");

@@ -34,6 +34,7 @@ public class Logger {
         if (targetingLogging) {
           System.out.println(logString);
         }
+        break;
       default:
         break;
     }

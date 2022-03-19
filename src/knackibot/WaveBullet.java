@@ -10,7 +10,8 @@ import java.awt.geom.*;
 import robocode.util.Utils;
 
 public class WaveBullet {
-  private double startX, startY; // Position of knackibot
+  private double startX; // Position of knackibot
+  private double startY; // Position of knackibot
   private double startBearing; // enemy abs bearing
   private double power; // power of bullet
   private long fireTime; // time we fired
@@ -39,7 +40,7 @@ public class WaveBullet {
       double angleOffset = Utils.normalRelativeAngle(desiredDirection - this.startBearing);
       double guessFactor =
           Math.max(-1, Math.min(1, angleOffset / MyUtils.maxEscapeAngle(this.power))) * direction;
-      int index = (int) Math.round((returnSegment.length - 1) / 2 * (guessFactor + 1));
+      int index = (int) Math.round(((double)returnSegment.length - 1) / 2 * (guessFactor + 1));
       returnSegment[index]++;
       return true;
     }

@@ -7,8 +7,6 @@ package knackibot;
 
 import java.util.*;
 import java.awt.geom.Point2D;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import robocode.*;
 
@@ -29,7 +27,7 @@ public class Enemy {
   private int nrBulletsHitKnackiThisRound;
   private int nrBulletsFiredThisRound;
 
-  static private List<Point2D.Double> posLog = new ArrayList<Point2D.Double>();
+  private static List<Point2D.Double> posLog = new ArrayList<>();
 
   public Enemy() {
     this.energy = 100;
@@ -72,7 +70,7 @@ public class Enemy {
     }
 
     // cache information from last turn
-    this.energyLastTurn = this.energy;;
+    this.energyLastTurn = this.energy;
 
   }
 

@@ -30,16 +30,26 @@ public class StopAndGoMovement implements MovementStrategy {
   private Point2D.Double calcMovingPoint(KnackOnOne me, double bearing,
       Point2D.Double lastMovingPoint, Point2D.Double enemyPos) {
     // angle to enemy is to direct, so change direction
-    /*
-     * if(Math.abs(bearing)<Math.PI/6 || Math.abs(bearing)<5*Math.PI/6){ // TODO: this line is
-     * wrong. Use correct angle Point2D.Double result = MyUtils.calcPoint(me.ownPos,
-     * Math.random()*300, Math.PI+bearing); if(result.x<0){ result.setLocation(100, result.y); }
-     * if(result.y<0){ result.setLocation(result.x, 100); } if(result.x>me.getBattleFieldWidth()){
-     * result.setLocation(me.getBattleFieldWidth()-100, result.y); }
-     * if(result.y>me.getBattleFieldHeight()){ result.setLocation(result.x,
-     * me.getBattleFieldHeight() - 100); } return result; } else{ //dont change moving point return
-     * lastMovingPoint; }
-     */
+    /*if(Math.abs(bearing)<Math.PI/6 || Math.abs(bearing)<5*Math.PI/6){ // TODO: this line is wrong. Use correct angle
+    Point2D.Double result = MyUtils.calcPoint(me.ownPos, Math.random()*300, Math.PI+bearing);
+    if(result.x<0){
+        result.setLocation(100, result.y);
+    }
+    if(result.y<0){
+        result.setLocation(result.x, 100);
+    }
+    if(result.x>me.getBattleFieldWidth()){
+        result.setLocation(me.getBattleFieldWidth()-100, result.y);
+    }
+    if(result.y>me.getBattleFieldHeight()){
+        result.setLocation(result.x, me.getBattleFieldHeight() - 100);
+    }
+    return result;
+}
+else{
+    //dont change moving point
+    return lastMovingPoint; 
+} */
     return (new Point2D.Double(Math.random() * 700, Math.random() * 500));
   }
 

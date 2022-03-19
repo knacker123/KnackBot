@@ -7,7 +7,7 @@ import robocode.util.Utils;
 
 public class GuessFactorTargeting implements TargetStrategy {
 
-  List<WaveBullet> g_waves = new ArrayList<WaveBullet>();
+  List<WaveBullet> g_waves = new ArrayList<>();
   static int[][] stats = new int[3][31]; // 31 is the number of unique GuessFactors we're using
   // Note: this must be odd number so we can get
   // GuessFactor 0 at middle.
@@ -48,7 +48,7 @@ public class GuessFactorTargeting implements TargetStrategy {
 
     // Let's process the waves now:
     for (int i = 0; i < g_waves.size(); i++) {
-      WaveBullet currentWave = (WaveBullet) g_waves.get(i);
+      WaveBullet currentWave = g_waves.get(i);
       if (currentWave.checkHit(enemy.getCurrentPosition().x, enemy.getCurrentPosition().y,
           me.getTime())) {
         g_waves.remove(currentWave);
@@ -83,7 +83,7 @@ public class GuessFactorTargeting implements TargetStrategy {
 
     // this should do the opposite of the math in the WaveBullet:
     double guessfactor =
-        (double) (bestindex - (currentStats.length - 1) / 2) / ((currentStats.length - 1) / 2);
+        (bestindex - ((double)currentStats.length - 1) / 2) / (((double)currentStats.length - 1) / 2);
     double angleOffset = direction * guessfactor * MyUtils.maxEscapeAngle(power);
     double gunAdjust =
         Utils.normalRelativeAngle(absBearing - me.getGunHeadingRadians() + angleOffset);
